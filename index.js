@@ -3,19 +3,31 @@
  * You can do all of this stuff using vanilla javascript though
  */
 
+ 
 // $(...) will run the function you give it when the page is loaded & ready
 $(function() {
   // console.log will log a message or object to the browser developer console
   console.log("page loaded...");
 
-  $("selector-goes-here").click(/* function for when the button is clicked goes here */);
+  $(":button").click( myFunction );
   /*
    * TODO: You will need to use a css selector to get jQuery to find the button element in the page
    * Then you will need to make a new javascript function to do stuff for when the button
    * is clicked and pass it into the click function above...
    * The function should call one of the functions below, and pass the other in as the callback...
    */
+
+  //displayQuestionAndAnswer("Who are you?", "Gene");
+
+
 });
+
+function myFunction(){
+  console.log("Button Clicked!");
+  fetchRandomTriviaQuestion( displayQuestionAndAnswer  );
+
+}
+
 
 function displayQuestionAndAnswer(question, answer) {
   $("#results-area").text("True or false?");
