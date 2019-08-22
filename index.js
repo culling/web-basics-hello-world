@@ -3,13 +3,51 @@
  * You can do all of this stuff using vanilla javascript though
  */
 
+ function printCurrentDate(){
+  let today = new Date();
+  let dateString = "";
+  dateString += today.getFullYear() + "/" + today.getMonth() + "/" + today.getDate();
+  $(".date").text(dateString);
+ }
+
+  function pad(n, width) { 
+    n = n + ''; 
+    if(n >= width ){
+      return n;
+    }
+    let zerosToPad = (width - n.length) + 1;
+    let paddingZeros = new Array(zerosToPad).join('0');
+    return (paddingZeros + n);
+  } 
+
+ function timer(){
+  let myTime = 15 * 60;
+  timerWithTime(myTime);
+ }
+
+ function printTimer(minutes, seconds){
+  seconds = pad(seconds, 2);
+  $(".timer").text(minutes + ":" + seconds );  
+ }
+
+ function timerWithTime(fullTimeInSeconds){
+  let minutes = Math.floor(fullTimeInSeconds/ 60);
+  let seconds = fullTimeInSeconds % 60;
+  printTimer(minutes, seconds);
+  fullTimeInSeconds--;
+  //console.log(fullTimeInSeconds);
+  window.setTimeout( function(){ timerWithTime(fullTimeInSeconds) }, 1000 );
+ }
+ 
  
 // $(...) will run the function you give it when the page is loaded & ready
 $(function() {
   // console.log will log a message or object to the browser developer console
   console.log("page loaded...");
+  printCurrentDate();
+  timer();
 
-  $(":button").click( myFunction );
+  $(":button").click( function(){myFunction();} );
   /*
    * TODO: You will need to use a css selector to get jQuery to find the button element in the page
    * Then you will need to make a new javascript function to do stuff for when the button
@@ -17,15 +55,12 @@ $(function() {
    * The function should call one of the functions below, and pass the other in as the callback...
    */
 
-  //displayQuestionAndAnswer("Who are you?", "Gene");
-
-
 });
 
 function myFunction(){
   console.log("Button Clicked!");
   fetchRandomTriviaQuestion( displayQuestionAndAnswer  );
-
+  $('#results-area').text("Fetching questions");
 }
 
 
@@ -42,7 +77,7 @@ function fetchRandomTriviaQuestion(callback) {
   // true or false trivia on animals encoded in base64
 
   // Configure your own api call at https://opentdb.com/api_config.php
-  var promise = $.get("https://opentdb.com/api.php?amount=1&category=27&type=boolean&encode=base64");
+  let promise = $.get("https://opentdb.com/api.php?amount=1&category=27&type=boolean&encode=base64");
 
   // $.get is asynchronous, so we need to define a
   // handler for when the request is complete
@@ -52,11 +87,11 @@ function fetchRandomTriviaQuestion(callback) {
     console.log(data);
 
     // extract and decode the results
-    var results = data.results;
+    let results = data.results;
 
     // atob() is a built in method to decode base64 encoded strings
-    var question = atob(results[0].question);
-    var answer = atob(results[0].correct_answer);
+    let question = atob(results[0].question);
+    let answer = atob(results[0].correct_answer);
 
     // call the function we passed into fetchRandomTriviaQuestion
     callback(question, answer);
